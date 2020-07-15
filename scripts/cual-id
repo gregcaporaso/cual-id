@@ -34,7 +34,8 @@ def barcode_generator(input, output_pdf, suppress_ids, barcode):
 @click.option('-l', '--length', type=int, default=8, required=False)
 @click.option('-f', '--fail-threshold', type=float, default=0.99, required=False)
 @click.option('-e', '--existing-ids', type=click.File('U'), default=None, required=False)
-def sample_id_generator(number_of_ids, length, fail_threshold, existing_ids):
+@click.option('-p', '--hrid-prefix', type=click.STRING, default=None, required=False)
+def sample_id_generator(number_of_ids, length, fail_threshold, existing_ids, hrid_prefix):
     """This script generates a file of sample IDs"""
     if fail_threshold >= 1:
         raise ValueError("")
@@ -43,7 +44,8 @@ def sample_id_generator(number_of_ids, length, fail_threshold, existing_ids):
       existing_ids = parse_ids(existing_ids, 0)
     for hrid, uuid_ in create_ids(number_of_ids, length,
                                   failure_threshold=fail_threshold,
-                                  existing_ids=existing_ids):
+                                  existing_ids=existing_ids,
+                                  hrid_prefix=hrid_prefix):
         collected += 1
         click.echo("%s\t%s" %(hrid, uuid_))
 

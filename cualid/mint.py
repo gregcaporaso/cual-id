@@ -19,7 +19,8 @@ def at_least_distance(query, existing, d=3):
 def create_ids(n, id_length,
                min_distance=3,
                failure_threshold=0.99,
-               existing_ids=None):
+               existing_ids=None,
+               hrid_prefix=None):
     if existing_ids is not None:
         hrids = existing_ids
     else:
@@ -33,6 +34,8 @@ def create_ids(n, id_length,
         trys += 1
         uuid_ = uuid.uuid4()
         hrid = uuid_.hex[-id_length:]
+        if hrid_prefix is not None:
+            hrid = ''.join([hrid_prefix, hrid])
         if at_least_distance(hrid, hrids, d=min_distance):
             uuids.append(uuid_)
             hrids.append(hrid)
